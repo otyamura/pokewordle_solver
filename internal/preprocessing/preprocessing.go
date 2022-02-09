@@ -10,7 +10,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func Get_poke(id int) types.Pokemon {
+func Get_poke(id int) types.PokemonRaw {
 	base_url := "https://pokeapi.co/api/v2/pokemon-species/"
 	resp, err := http.Get(base_url + strconv.Itoa(id))
 	if err != nil {
@@ -22,7 +22,7 @@ func Get_poke(id int) types.Pokemon {
 		log.Fatal(err)
 	}
 	json := string(body)
-	p := types.Pokemon{
+	p := types.PokemonRaw{
 		Name:       gjson.Get(json, "names.0.name").String(),
 		Generation: gjson.Get(json, "generation.name").String(),
 	}
