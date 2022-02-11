@@ -10,7 +10,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func Get_poke(id int) types.PokemonRaw {
+func GetPoke(id int) types.PokemonRaw {
 	base_url := "https://pokeapi.co/api/v2/pokemon-species/"
 	resp, err := http.Get(base_url + strconv.Itoa(id))
 	if err != nil {

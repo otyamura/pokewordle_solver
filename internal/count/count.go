@@ -1,12 +1,9 @@
 package count
 
 import (
-	"log"
-	"os"
 	"sort"
 
-	"github.com/gocarina/gocsv"
-	"github.com/otyamura/pokewordle_solver/types"
+	"github.com/otyamura/pokewordle_solver/internal/load"
 )
 
 type Pair struct {
@@ -33,26 +30,13 @@ func GetCharRanking() PairList {
 }
 
 func countChar() map[string]int {
-	pokes := load_pokes()
+	pokes := load.LoadPokeRaws()
 	m := make(map[string]int)
 	for _, p := range pokes {
 		for _, c := range p.Name {
 			m[string(c)]++
 		}
 	}
+
 	return m
-}
-
-func load_pokes() []types.Pokemon {
-	f, err := os.OpenFile("./csv/pokes.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	pokes := []types.Pokemon{}
-	if err := gocsv.UnmarshalFile(f, &pokes); err != nil {
-		log.Fatal(err)
-	}
-	return pokes
 }

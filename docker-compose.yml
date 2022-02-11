@@ -1,0 +1,25 @@
+version: "3" # 3が最新
+services:
+  app:
+    container_name: go-container
+    build:  # ビルドに使うDockerfileの場所
+      context: .
+      target: release
+    tty: true # コンテナの永続化
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_PASSWORD
+  db:
+    image: postgres:alpine
+    tty: true
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: admin
+      POSTGRES_DB: pokes
+    ports:
+      - "5432:5432"

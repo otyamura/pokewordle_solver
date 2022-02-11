@@ -7,6 +7,7 @@ import (
 
 	"github.com/gocarina/gocsv"
 	pre "github.com/otyamura/pokewordle_solver/internal/preprocessing"
+	"github.com/otyamura/pokewordle_solver/types"
 )
 
 // const MAX_POKES = 898
@@ -14,9 +15,9 @@ import (
 const MAX_POKES = 10
 
 func main() {
-	pokes := []pre.Pokemon{}
+	pokes := []types.PokemonRaw{}
 	for i := 1; i <= MAX_POKES; i++ {
-		p := pre.Get_poke(i)
+		p := pre.GetPoke(i)
 		if utf8.RuneCountInString(p.Name) == 5 {
 			fmt.Println(p.Name)
 			pokes = append(pokes, p)

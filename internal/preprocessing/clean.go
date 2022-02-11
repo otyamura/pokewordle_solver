@@ -6,7 +6,7 @@ import (
 )
 
 func Cleaning() []types.Pokemon {
-	raws := load.Load_pokes()
+	raws := load.LoadPokeRaws()
 	var pokes []types.Pokemon
 	var pre = "generation-"
 	for _, raw := range raws {
