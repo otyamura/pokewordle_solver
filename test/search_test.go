@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -41,5 +42,8 @@ func TestSimpleSearch(t *testing.T) {
 
 func config() {
 	apath, _ := filepath.Abs("../")
-	os.Chdir(apath)
+	err := os.Chdir(apath)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

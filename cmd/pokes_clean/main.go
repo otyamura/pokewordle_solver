@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/gocarina/gocsv"
@@ -13,5 +14,8 @@ func main() {
 	defer file.Close()
 
 	// csvファイルを書き出し
-	gocsv.MarshalFile(pokes, file)
+	err := gocsv.MarshalFile(pokes, file)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -1,8 +1,15 @@
 package main
 
-import con "github.com/otyamura/pokewordle_solver/internal/connection"
+import (
+	"log"
+
+	con "github.com/otyamura/pokewordle_solver/internal/connection"
+)
 
 func main() {
 	_, r := con.CreateConnection()
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

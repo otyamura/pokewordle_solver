@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"unicode/utf8"
 
@@ -28,5 +29,8 @@ func main() {
 	defer file.Close()
 
 	// csvファイルを書き出し
-	gocsv.MarshalFile(pokes, file)
+	err := gocsv.MarshalFile(pokes, file)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
