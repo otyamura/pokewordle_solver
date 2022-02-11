@@ -3,7 +3,7 @@ FROM golang:1.16-alpine as dev
 ENV ROOT=/usr/src
 WORKDIR ${ROOT}
 # アップデートとgitのインストール
-RUN apk update && apk add git && apk add bash && apk add --no-cache coreutils
+RUN apk update && apk add git bash gcc musl-dev make && apk add --no-cache coreutils
 # ホストのファイルをコンテナの作業ディレクトリに移行
 # 依存関係
 COPY go.mod go.sum ./
@@ -14,8 +14,9 @@ WORKDIR ${ROOT}/app
 # ソースコードとか変更頻度が高いものは後
 COPY . .
 
-CMD ["./wait-for-it.sh", "db:5432", "--", "go", "run", "./cmd/pokewordle_solver/main.go"]
+CMD ["./wait-for-it.sh", "db:5432", "--", "make", "run"]
 
+# 本番用
 FROM golang:1.16-alpine as builder
 # ワーキングディレクトリの設定
 ENV ROOT=/usr/src
