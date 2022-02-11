@@ -3,6 +3,11 @@ all:
 	make up
 	make test
 
+all-gha:
+	make build
+	make up
+	make test-gha
+
 build:
 	docker compose build
 
@@ -18,6 +23,10 @@ migrate:
 .PHONY: test
 test:
 	docker compose exec -w /usr/src/app/ app go test -v ./test/
+
+.PHONY: test-gha
+test-gha:
+	docker compose exec -T -w /usr/src/app/ app go test -v ./test/
 
 run:
 	go run ./cmd/pokes_migrate/main.go
