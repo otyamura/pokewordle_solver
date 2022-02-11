@@ -51,7 +51,7 @@ func main() {
 		}
 		fmt.Println(q)
 		fmt.Println(p)
-		var poke []types.Pokemon
+		var pokes []types.Pokemon
 		tmp := search.SearchGeneration(db, l, g)
 		if q == "_____" {
 			tmp = search.SearchPartial(tmp, p)
@@ -59,8 +59,15 @@ func main() {
 			tmp = search.SearchCorrect(tmp, q)
 			tmp = search.SearchPartial(tmp, p)
 		}
-		tmp.Find(&poke)
-		fmt.Println(poke)
+		tmp.Find(&pokes)
+		fmt.Println(pokes)
+		var names []string
+		for _, poke := range pokes {
+			names = append(names, poke.Name)
+		}
+		c.JSON(200, gin.H{
+			"names": names,
+		})
 	})
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
