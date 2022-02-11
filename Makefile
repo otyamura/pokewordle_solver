@@ -1,3 +1,8 @@
+all:
+	make build
+	make up
+	make test
+
 build:
 	docker compose build
 
