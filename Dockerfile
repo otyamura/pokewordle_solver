@@ -4,7 +4,7 @@ FROM golang:1.16-alpine as builder
 ENV ROOT=/usr/src
 WORKDIR ${ROOT}
 # アップデートとgitのインストール
-RUN apk update && apk add git
+RUN apk update && apk add git alpine-sdk
 # ホストのファイルをコンテナの作業ディレクトリに移行
 # 依存関係
 COPY go.mod go.sum ./
@@ -15,11 +15,11 @@ WORKDIR ${ROOT}/app
 # ソースコードとか変更頻度が高いものは後
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o ${ROOT}/bin ./cmd/pokewordle_solver/main.go
+RUN GOOS=linux go build -o ${ROOT}/bin ./cmd/pokewordle_solver/main.go
+# WORKDIR ${ROOT}/bin
+# RUN touch .bin
 
-FROM scratch as release
-
-RUN apk update && apk add bash && apk add --no-cache coreutils
+FROM alpine:latest as release
 
 ENV ROOT=/usr/src
 ENV GIN_MODE=release
