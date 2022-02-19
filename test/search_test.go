@@ -12,8 +12,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPingRouter(t *testing.T) {
+func TestMain(m *testing.M) {
 	config()
+	println("before all...")
+
+	code := m.Run()
+
+	println("after all...")
+
+	os.Exit(code)
+}
+func TestPingRouter(t *testing.T) {
 	_, router := con.CreateConnection()
 	w := httptest.NewRecorder()
 	//c, _ := gin.CreateTestContext(w)
