@@ -23,7 +23,7 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "hello!, this is pokewordle_solver!",
+			"message": "hello!, this is pokewordle_solver!!",
 		})
 	})
 	r.GET("/ping", func(c *gin.Context) {
