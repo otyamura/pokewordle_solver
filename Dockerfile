@@ -13,6 +13,7 @@ WORKDIR ${ROOT}/app
 
 # ソースコードとか変更頻度が高いものは後
 COPY . .
+EXPOSE 8080
 
 CMD ["go", "run", "./cmd/pokewordle_solver/main.go"]
 
@@ -45,4 +46,5 @@ WORKDIR ${ROOT}
 COPY --from=builder  ${ROOT}/bin .
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY ./db/ ./db/
+EXPOSE 8080
 CMD ["./bin"]
