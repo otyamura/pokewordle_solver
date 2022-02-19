@@ -34,7 +34,7 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 	r.GET("/poke", func(c *gin.Context) {
 		s := c.DefaultQuery("name", "")
 		l := c.DefaultQuery("less", DEFAULT_LESS_GEN)
-		g := c.DefaultQuery("greater", DEFAULT_LESS_GEN)
+		g := c.DefaultQuery("greater", DEFAULT_GREATER_GEN)
 		// .:no hit, x:hit but position is not correct, o:hit and position is correct
 		h := c.DefaultQuery("hits", DEFAULT_HITS)
 		var r types.Response
