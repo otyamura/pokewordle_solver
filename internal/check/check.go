@@ -5,7 +5,8 @@ import "fmt"
 func ParseCorrect(s string, h string) (string, error) {
 	var tmp string
 	rs := []rune(s)
-	if len(rs) != 5 && len(h) != 5 {
+	fmt.Println(len(rs))
+	if len(rs) != 5 || len(h) != 5 {
 		return "", fmt.Errorf("poke name or hits not match len")
 	}
 	for i, r := range rs {

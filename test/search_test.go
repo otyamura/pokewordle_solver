@@ -25,28 +25,52 @@ func TestMain(m *testing.M) {
 func TestPingRouter(t *testing.T) {
 	_, router := con.CreateConnection()
 	w := httptest.NewRecorder()
-	//c, _ := gin.CreateTestContext(w)
 	req, _ := http.NewRequest("GET", "/ping", nil)
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
-	// ...
-	assert.Equal(t, w.Body.String(), "{\"message\":\"pong\"}")
+	assert.Equal(t, "{\"message\":\"pong\"}", w.Body.String())
 }
 
 func TestSimpleSearch(t *testing.T) {
 	_, router := con.CreateConnection()
 	w := httptest.NewRecorder()
-	//c, _ := gin.CreateTestContext(w)
 	req, _ := http.NewRequest("GET", "/poke", nil)
 	q := req.URL.Query()
 	q.Add("name", "カイリュー")
 	req.URL.RawQuery = q.Encode()
 	router.ServeHTTP(w, req)
-	expected := `{"names":["カイリュー"]}`
+	expected := `{"response":{"error":"","names":["カイリュー"]}}`
 	assert.Equal(t, 200, w.Code)
-	// ...
-	assert.Equal(t, w.Body.String(), expected)
+	assert.Equal(t, expected, w.Body.String())
+}
+
+func TestPartialSearch(t *testing.T) {
+	_, router := con.CreateConnection()
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/poke", nil)
+	q := req.URL.Query()
+	q.Add("name", "カイリュー")
+	q.Add("hits", "..x..")
+	req.URL.RawQuery = q.Encode()
+	router.ServeHTTP(w, req)
+	expected := `{"response":{"error":"","names":["リザードン","バタフリー","オニドリル","ニドリーナ","ニドリーノ","ダグトリオ","オコリザル","ワンリキー","ゴーリキー","カイリキー","ドードリオ","スリーパー","ビリリダマ","ベロリンガ","バリヤード","フリーザー","ミニリュウ","ハクリュー","カイリュー"]}}`
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, expected, w.Body.String())
+}
+
+func TestHitsSearch(t *testing.T) {
+	_, router := con.CreateConnection()
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/poke", nil)
+	q := req.URL.Query()
+	q.Add("name", "カイリュー")
+	q.Add("hits", "o.x..")
+	req.URL.RawQuery = q.Encode()
+	router.ServeHTTP(w, req)
+	expected := `{"response":{"error":"","names":["カイリキー","カイリュー"]}}`
+	assert.Equal(t, 200, w.Code)
+	assert.Equal(t, expected, w.Body.String())
 }
 
 func config() {
