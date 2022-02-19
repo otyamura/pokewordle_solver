@@ -32,18 +32,37 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 		})
 	})
 	r.GET("/poke", func(c *gin.Context) {
-		s := c.Query("name")
+		s := c.DefaultQuery("name", "")
 		l := c.DefaultQuery("less", DEFAULT_LESS_GEN)
 		g := c.DefaultQuery("greater", DEFAULT_LESS_GEN)
 		// .:no hit, x:hit but position is not correct, o:hit and position is correct
 		h := c.DefaultQuery("hits", DEFAULT_HITS)
+		var r types.Response
+		if l < DEFAULT_LESS_GEN || g > DEFAULT_GREATER_GEN {
+			err := fmt.Errorf("invalid generation")
+			r.Error = err.Error()
+			c.JSON(400, gin.H{
+				"response": r,
+			})
+			return
+		}
 		q, err := check.ParseCorrect(s, h)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+			r.Error = err.Error()
+			c.JSON(400, gin.H{
+				"response": r,
+			})
+			return
 		}
 		p, err := check.ParsePartial(s, h)
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+			r.Error = err.Error()
+			c.JSON(400, gin.H{
+				"response": r,
+			})
+			return
 		}
 		fmt.Println(q)
 		fmt.Println(p)
@@ -61,8 +80,9 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 		for _, poke := range pokes {
 			names = append(names, poke.Name)
 		}
+		r.Names = names
 		c.JSON(200, gin.H{
-			"names": names,
+			"response": r,
 		})
 	})
 	return db, r
