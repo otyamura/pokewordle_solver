@@ -3,13 +3,12 @@ package connection
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/otyamura/pokewordle_solver/internal/check"
 	"github.com/otyamura/pokewordle_solver/internal/search"
 	"github.com/otyamura/pokewordle_solver/types"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -65,8 +64,7 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 }
 
 func CreateDBConnection() *gorm.DB {
-	dsn := "host=db user=admin password=" + os.Getenv("POSTGRES_PASSWORD") + " dbname=pokes port=5432 sslmode=disable TimeZone=Asia/Tokyo"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("./db/pokemon.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}

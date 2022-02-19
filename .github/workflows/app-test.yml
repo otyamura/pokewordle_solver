@@ -11,7 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: compose-run
-        env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
           make all-gha
