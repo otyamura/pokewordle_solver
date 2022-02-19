@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/otyamura/pokewordle_solver/internal/check"
 	"github.com/otyamura/pokewordle_solver/internal/search"
@@ -20,6 +21,35 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 	db := CreateDBConnection()
 
 	r := gin.Default()
+	// r.Use(cors.New(cors.Config{
+	// 	// アクセス許可するオリジン
+	// 	AllowOrigins: []string{
+	// 		"http://localhost",
+	// 	},
+	// 	// アクセス許可するHTTPメソッド
+	// 	AllowMethods: []string{
+	// 		"POST",
+	// 		"GET",
+	// 		"OPTIONS",
+	// 	},
+	// 	// 許可するHTTPリクエストヘッダ
+	// 	AllowHeaders: []string{
+	// 		"Access-Control-Allow-Headers",
+	// 		"Access-Control-Allow-Origin",
+	// 		"Access-Control-Allow-Credentials",
+	// 		"Content-Type",
+	// 	},
+	// 	// cookieなどの情報を必要とするかどうか
+	// 	AllowCredentials: false,
+	// 	// preflightリクエストの結果をキャッシュする時間
+	// 	MaxAge: 24 * time.Hour,
+	// }))
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"*"},
+		AllowHeaders: []string{"*"},
+	}))
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -27,6 +57,7 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 		})
 	})
 	r.GET("/ping", func(c *gin.Context) {
+		// c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
