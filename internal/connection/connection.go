@@ -77,6 +77,14 @@ func CreateConnection() (*gorm.DB, *gin.Engine) {
 			})
 			return
 		}
+		if l > g {
+			err := fmt.Errorf("invalid generation")
+			r.Error = err.Error()
+			c.JSON(400, gin.H{
+				"response": r,
+			})
+			return
+		}
 		q, err := check.ParseCorrect(s, h)
 		if err != nil {
 			fmt.Println(err)
